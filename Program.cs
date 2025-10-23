@@ -1,7 +1,17 @@
+using HappyPawsKennel.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Register DbContext
+builder.Services.AddDbContext<HappyPawsContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 var app = builder.Build();
 

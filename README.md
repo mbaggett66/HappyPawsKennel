@@ -22,40 +22,33 @@ and designed with everyday use in mind.
 
 Planning Table:
 
-Week:   Concept:           Feature:                Goal:                 Acceptance Criteria:         Evidence in README.md:          Test Plan:
+| Week | Concept               | Feature                              | Goal                                           | Acceptance Criteria                                                                 | Evidence in README.md                     | Test Plan                                                                 |
+|------|------------------------|--------------------------------------|------------------------------------------------|--------------------------------------------------------------------------------------|-------------------------------------------|---------------------------------------------------------------------------|
+| 10   | Modeling              | Create 'Dog' and 'Kennel' entities.  | App can store dogs and assign them to kennels. | - Dogs table created<br>- Kennels table created<br>- Relationship works              | Implemented code; README write-up; screenshots. | Run migration; check database tables.                                     |
+| 11   | Separation of Concerns / DI | Add 'IDogService' for kennel assignment. | Move logic from controller into a service.     | - IDogService interface exists<br>- Controller uses constructor injection<br>- Assignment logic works | Implemented code; README write-up; screenshots. | Call service methods from controller endpoints.                           |
+| 12   | CRUD                  | Create/Edit/Delete dog and kennel pages. | Allow staff to manage dog records and kennel assignments through a web UI. | - Create/edit/delete pages exist<br>- Changes persist to DB<br>- Kennel occupancy updates correctly | Implemented code; README write-up; screenshots. | Add a dog, edit fields, delete, and confirm database changes.             |
+| 13   | Diagnostics           | Add `/healthz` endpoint.             | Health check to verify DB connectivity.        | - Endpoint returns healthy when DB is reachable<br>- Returns unhealthy if DB is unavailable | Implemented code; README write-up; screenshots. | Stop DB, call `/healthz`.                                                 |
+| 14   | Logging               | Log dog check-ins & check-outs.      | Track kennel operations with structured logs.  | - Log messages created on check-in/out<br>- Logs include dog and kennel information   | Implemented code; README write-up; screenshots. | Perform check-in/out operations and check log output.                     |
+| 15   | Stored Procedures     | Top kennels by occupancy.            | Show kennels with the highest occupancy.       | - Stored procedure executes correctly<br>- Results displayed                         | Implemented code; README write-up; screenshots. | Run stored procedure in app and verify result matches DB query.           |
+| 16   | Deployment            | Deploy app to Azure App Service.     | Make the application accessible.               | - App Service created<br>- App runs on Azure<br>- `/healthz` reachable<br>- One path works | Implemented code; README write-up; screenshots; deployed URL. | Visit URL; check `/healthz` and ensure page loads.                        |
 
-10      Modeling         Create 'Dog' and       App can store dogs      -Dogs table created         Implemented code; README        Run migration;
-                         'Kennel' entities.      and assign them to     -Kennels table created      write-up; screenshots.          Check Db tables. 
-                                                kennels.                -Relationship works         
 
-11      Separation       Add 'IDogService'      Move logic from         -IDogService interface      Implemented code; README        Call service methods from 
-        of Concerns/DI   for kennel             controller into a       exists                      write-up; screenshots.          controller end-points.
-                         assignment.            service.                -Controller uses 
-                                                                        constructor injection
-                                                                        -Assignment logic works
+Week 10 Write-Up:
 
-12      CRUD             Create/Edit/Delete     Allow staff to          -Create/edit/delete         Implemented code; README        Add a dog, edit fields,
-                         dog and kennel pages.  manage dog records      pages exist.                write-up; screenshots.          delete, and confirm
-                                                and kennel assignments  -Changes persist to                                         database changes.
-                                                through a web UI.       DB
-                                                                        -Kennel occupancy
-                                                                        updates correctly
+This week’s focus was on modeling, specifically creating the Dog and Kennel entities and setting up the relationships 
+between them. The goal was to give the application the ability to store information about dogs and assign them to kennels, 
+forming the foundation for later features like check-ins, occupancy tracking, and service-based logic.
 
-13      Diagnostics      Add /healthz           Health check to verify  -Endpoint returns healthy   Implemented code; README        Stop DB, call /healthz.
-                         endpoint.              Db connectivity.        when DB is reached          write-up; screenshots.
-                                                                        -Returns unhealthy if 
-                                                                        DB is unavailable
+I started by defining the Dog and Kennel model classes, giving each their necessary properties such as DogId, Name, Breed, 
+and KennelId for dogs, and KennelId, Name, and Capacity for kennels. I then added navigation properties to establish a 
+one-to-many relationship, allowing each kennel to contain multiple dogs while each dog belongs to one kennel. After updating 
+the DbContext to include DbSet<Dog> and DbSet<Kennel>, I created and ran a migration to generate the corresponding tables in 
+SQL Server.
 
-14      Logging          Log dog check-ins &    Track kennel operations -Log messaged created       Implemented code; README        Perform check-in/out
-                         check-outs.            with structured logs.   on check-in/out             write-up; screenshots.          operations and check
-                                                                        -Logs include dog and                                       log output.
-                                                                        kennel information
+Once the migration was complete, I verified that both the Dogs and Kennels tables appeared correctly in the database and that 
+their foreign key relationship was properly configured. This step confirmed that the model structure was functioning as intended 
+and that Entity Framework Core was successfully mapping the relationships.
 
-15      Stored           Top kennels by         Show kennels with        -Stored procedure          Implemented code; README        Run stored procedure in
-        Procedures       occupancy.             the highest occupancy.   executes correctly         write-up; screenshots.          app and verify result 
-                                                                         -Results displayed                                         matches DB query.
+Overall, Week 10 solidified the foundation of the application’s data layer. By implementing the core entities and ensuring the 
+database schema reflected the model design, the project is now ready to build on this structure for the future weeks.
 
-16      Deployment       Deploy app to Azure    Make the application     -App Service created       Implemented code; README        Visit URL; check /healthz
-                         App Service.           accesible.               -App runs on Azure         write-up; screenshots;          and ensure page loads.
-                                                                         -/healthz reachable        deployed URL.
-                                                                         -One path works
