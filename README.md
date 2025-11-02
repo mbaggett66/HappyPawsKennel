@@ -33,7 +33,7 @@ Planning Table:
 | 16   | Deployment            | Deploy app to Azure App Service.     | Make the application accessible.               | - App Service created<br>- App runs on Azure<br>- `/healthz` reachable<br>- One path works | Implemented code; README write-up; screenshots; deployed URL. | Visit URL; check `/healthz` and ensure page loads.                        |
 
 
-Week 10 Write-Up:
+Week 10 - Modeling:
 
 This week’s focus was on modeling, specifically creating the Dog and Kennel entities and setting up the relationships 
 between them. The goal was to give the application the ability to store information about dogs and assign them to kennels, 
@@ -52,3 +52,19 @@ and that Entity Framework Core was successfully mapping the relationships.
 Overall, Week 10 solidified the foundation of the application’s data layer. By implementing the core entities and ensuring the 
 database schema reflected the model design, the project is now ready to build on this structure for the future weeks.
 
+
+Week 11 – Separation of Concerns / Dependency Injection:
+
+This week, I implemented Separation of Concerns by moving logic out of the controller and into a service class. The idea was to 
+make the controller lighter and the code easier to maintain. I created a new service interface and a concrete implementation called 
+KennelService, which handles logic related to kennel availability. The service communicates directly with the database context and 
+provides a simple method for retrieving the number of available kennels.
+
+After creating the service, I registered it in the DI container using a scoped lifetime, which allows it to be created once per HTTP 
+request. Then, I injected it into the KennelsController and used it inside the Index action. The controller now simply calls the 
+service method and passes the result to the view.
+
+One of the biggest takeaways from this week was understanding how dependency injection improves maintainability. 
+By keeping the data access logic separate, I could easily replace the service for testing purposes without affecting the 
+rest of the application. This pattern can be used in real-world projects, and it helps create more modular, flexible, and 
+professional ASP.NET applications.
