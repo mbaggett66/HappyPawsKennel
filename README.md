@@ -68,3 +68,20 @@ One of the biggest takeaways from this week was understanding how dependency inj
 By keeping the data access logic separate, I could easily replace the service for testing purposes without affecting the 
 rest of the application. This pattern can be used in real-world projects, and it helps create more modular, flexible, and 
 professional ASP.NET applications.
+
+
+Week 12 - CRUD
+
+For Week 12, I focused on implementing CRUD (Create, Read, Update, Delete) functionality for the Dog entity in the HappyPaws Kennel
+web application. This enhancement allows users to add new dogs, view detailed information, update existing records, and remove dogs
+directly through the user-friendly web interface. To ensure the program was efficient and responsive, I utilized Entity Framework Core with
+asynchronous methods such as ToListAsync, FindAsync, and SaveChangesAsync, whichenables smooth data retrieval and updates without blocking 
+the application.
+
+I scaffolded the DogController to manage user interactions and linked it to the HappyPawsContext database context to handle all data-related 
+operations. I also added form validation to the Create and Edit views, ensuring that users provide accurate and complete information 
+before submitting changes. This prevents common data entry errors and improves overall reliability.
+
+Once all of the components were connected and tested, the Dog management system became fully functional within the HappyPaws Kennel application. 
+The kennel staff can now easily manage dog records from one centralized place, making it much more practical for tracking kennel occupancy and daily 
+operations. This week's additions represent a key step in creating a more interactive and efficient kennel management tool.
