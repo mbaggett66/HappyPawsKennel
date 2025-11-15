@@ -85,3 +85,19 @@ before submitting changes. This prevents common data entry errors and improves o
 Once all of the components were connected and tested, the Dog management system became fully functional within the HappyPaws Kennel application. 
 The kennel staff can now easily manage dog records from one centralized place, making it much more practical for tracking kennel occupancy and daily 
 operations. This week's additions represent a key step in creating a more interactive and efficient kennel management tool.
+
+
+Week 13 – Diagnostics 
+
+This week, I implemented diagnostics for my HappyPawsKennel application by adding an operational /healthz endpoint that reports the health of at least
+one real dependency, in this case, the application’s SQL Server database. The goal of this week was to create a reliable way to check whether the system
+is functioning correctly without exposing any sensitive information.
+Since .NET 9 does not currently support the AddDbContextCheck extension found in earlier versions, I created a custom DbHealthCheck class that implements
+the IHealthCheck interface. Inside this health check, I used Entity Framework Core’s Database.CanConnectAsync() method to verify that the application can
+successfully connect to the database. If the connection succeeds, the health check reports a “Healthy” status; if not, it returns “Unhealthy,” along with
+a short description that helps identify the issue.
+I then mapped a custom /healthz endpoint and added a JSON response writer. The output includes overall system status, individual check results, and
+execution durations—all useful for troubleshooting but intentionally designed not to leak secrets or internal exception details.
+Implementing this feature helped me understand how health checks are used in real-world production systems, especially in environments where automatic
+monitoring tools, such as Azure, need a reliable way to determine whether an app instance is ready or functional. I can see how this approach contributes
+to building more stable and maintainable applications.
