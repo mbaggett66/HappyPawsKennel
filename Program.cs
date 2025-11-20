@@ -8,6 +8,10 @@ using HappyPawsKennel.Health;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Logging
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 builder.Services.AddControllersWithViews(); 
 
 // Add services to the container.

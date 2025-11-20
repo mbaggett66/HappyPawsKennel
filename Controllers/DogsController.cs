@@ -13,10 +13,12 @@ namespace HappyPawsKennel.Controllers
     public class DogsController : Controller
     {
         private readonly HappyPawsContext _context;
+        private readonly ILogger<DogsController> _logger;
 
-        public DogsController(HappyPawsContext context)
+        public DogsController(HappyPawsContext context, ILogger<DogsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Dogs
@@ -31,17 +33,21 @@ namespace HappyPawsKennel.Controllers
         {
             if (id == null)
             {
+                _logger.LogWarning("Details requested with null ID. CorrelationId={CorrelationId}", HttpContext.TraceIdentifier);
                 return NotFound();
             }
 
             var dog = await _context.Dogs
                 .Include(d => d.Kennel)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (dog == null)
             {
+                _logger.LogWarning("Dog not found. DogId={DogId} CorrelationId={CorrelationId}", id, HttpContext.TraceIdentifier);
                 return NotFound();
             }
 
+            _logger.LogInformation("Dog details retrieved successfully. DogId={DogId} CorrelationId={CorrelationId}", id, HttpContext.TraceIdentifier);
             return View(dog);
         }
 
@@ -59,14 +65,20 @@ namespace HappyPawsKennel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Breed,Age,Weight,OwnerName,KennelId")] Dog dog)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(dog);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _logger.LogWarning("Create failed due to invalid model state. CorrelationId={CorrelationId}", HttpContext.TraceIdentifier);
+                ViewData["KennelId"] = new SelectList(_context.Kennels, "Id", "Id", dog.KennelId);
+                return View(dog);
             }
-            ViewData["KennelId"] = new SelectList(_context.Kennels, "Id", "Id", dog.KennelId);
-            return View(dog);
+
+            _context.Add(dog);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Dog created successfully. DogId={DogId} Name={Name} CorrelationId={CorrelationId}",
+                dog.Id, dog.Name, HttpContext.TraceIdentifier);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Dogs/Edit/5
@@ -95,6 +107,8 @@ namespace HappyPawsKennel.Controllers
         {
             if (id != dog.Id)
             {
+                _logger.LogError("Dog edit failed due to ID mismatch. RouteId={RouteId} DogId={DogId} CorrelationId={CorrelationId}",
+                    id, dog.Id, HttpContext.TraceIdentifier);
                 return NotFound();
             }
 
@@ -104,20 +118,23 @@ namespace HappyPawsKennel.Controllers
                 {
                     _context.Update(dog);
                     await _context.SaveChangesAsync();
+
+                    _logger.LogInformation("Dog edited successfully. DogId={DogId} CorrelationId={CorrelationId}",
+                        dog.Id, HttpContext.TraceIdentifier);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    _logger.LogError("Concurrency exception while editing dog. DogId={DogId} CorrelationId={CorrelationId}",
+                        dog.Id, HttpContext.TraceIdentifier);
+
                     if (!DogExists(dog.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["KennelId"] = new SelectList(_context.Kennels, "Id", "Id", dog.KennelId);
             return View(dog);
         }
@@ -147,12 +164,20 @@ namespace HappyPawsKennel.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dog = await _context.Dogs.FindAsync(id);
-            if (dog != null)
+
+            if (dog == null)
             {
-                _context.Dogs.Remove(dog);
+                _logger.LogWarning("Delete attempted but dog not found. DogId={DogId} CorrelationId={CorrelationId}",
+                    id, HttpContext.TraceIdentifier);
+                return NotFound();
             }
 
+            _context.Dogs.Remove(dog);
             await _context.SaveChangesAsync();
+
+            _logger.LogInformation("Dog deleted successfully. DogId={DogId} CorrelationId={CorrelationId}",
+                id, HttpContext.TraceIdentifier);
+
             return RedirectToAction(nameof(Index));
         }
 
