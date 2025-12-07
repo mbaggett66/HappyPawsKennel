@@ -23,6 +23,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddScoped<IKennelService, KennelService>();
 
+builder.Services.AddScoped<IDogService, DogService>();
+
 builder.Services.AddHealthChecks()
     .AddCheck<DbHealthCheck>("database");
 

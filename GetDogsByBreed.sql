@@ -1,0 +1,6 @@
+﻿CREATE PROCEDURE GetDogsByBreed
+    @Breed NVARCHAR(50)
+AS
+BEGIN
+    SELECT * FROM Dogs WHERE Breed = @Breed;
+END

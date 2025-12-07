@@ -1,0 +1,40 @@
+﻿@model List<HappyPawsKennel.Models.Dog>
+
+<h2>Search Dogs by Breed</h2>
+
+<form method="get">
+    <input type="text" name="breed" placeholder="Enter breed..." />
+    <button type="submit">Search</button>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Breed</th>
+                <th>Age</th>
+                <th>Weight</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dog in Model)
+            {
+                <tr>
+                    <td>@dog.Name</td>
+                    <td>@dog.Breed</td>
+                    <td>@dog.Age</td>
+                    <td>@dog.Weight</td>
+                    <td>@dog.OwnerName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No dogs found for that breed.</p>
+}
+

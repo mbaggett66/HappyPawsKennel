@@ -104,6 +104,7 @@ to building more stable and maintainable applications.
 
 
 Week 14- Logging
+
 This week I focused on adding structured logging throughout my HappyPawsKennel application to improve observability, track key actions, and support
 troubleshooting. Logging is essential in real-world applications because it allows developers and administrators to understand what the system is doing,
 detect failures early, and diagnose issues quickly. For this project, I implemented both success-path and error-path logs, added important contextual details,
@@ -115,4 +116,20 @@ containing the dog’s data as structured fields. If an exception occurs, an err
 I validated the logging by running the application, creating and deleting dogs, and confirming that SQL queries and structured log messages appeared in the
 console. These logs now provide clear visibility into application behavior and would be very useful in a production environment for diagnosing issues such as
 failing database operations or unexpected exceptions.
+
+
+Week 15 – Stored Procedures 
+
+For Week 15, I implemented stored procedures in the HappyPawsKennel application to demonstrate server-side querying using SQL and EF Core. I created a stored
+procedure named GetDogsByBreed, which accepts a breed parameter and returns matching dog records. This procedure was added directly to my SQL Server database
+and committed to the project in a /DatabaseScripts folder for reference.
+To integrate the procedure into the app, I created a new service (DogService) with a method that executes the stored procedure using FromSqlInterpolated, which
+safely handles parameters and prevents SQL injection. I also added a matching interface, IDogService, and registered the service in Program.cs so it could be
+injected into controllers.
+Next, I added a new controller action called SearchByBreed in the DogsController. This action calls the stored procedure via the service and returns the results
+to a Razor view. I created a simple view (SearchByBreed.cshtml) that includes a search box, executes the procedure on GET requests, and displays the results in 
+a table.
+Overall, this week helped me understand how stored procedures can be combined with EF Core to improve performance and use SQL logic. This approach would be
+valuable in any real application that needs optimized or repeated database operations.
+
 

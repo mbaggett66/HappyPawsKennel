@@ -14,6 +14,7 @@ namespace HappyPawsKennel.Controllers
     {
         private readonly HappyPawsContext _context;
         private readonly ILogger<DogsController> _logger;
+        private readonly IDogService _dogService;
 
         public DogsController(HappyPawsContext context, ILogger<DogsController> logger)
         {
@@ -184,6 +185,16 @@ namespace HappyPawsKennel.Controllers
         private bool DogExists(int id)
         {
             return _context.Dogs.Any(e => e.Id == id);
+        }
+        
+
+        public async Task<IActionResult> SearchByBreed(string breed)
+        {
+            if (string.IsNullOrEmpty(breed))
+                return View(new List<Dog>());
+
+            var dogs = await _dogService.GetDogsByBreedAsync(breed);
+            return View(dogs);
         }
     }
 }
