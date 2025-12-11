@@ -133,3 +133,22 @@ Overall, this week helped me understand how stored procedures can be combined wi
 valuable in any real application that needs optimized or repeated database operations.
 
 
+
+Week 16 – Deployment to Azure (Simulated)
+
+For Week 16, the requirement was to deploy the HappyPawsKennel application to Azure App Service. However, my Azure Student credits had already been used prior to
+deployment. Since the instructor stated that the assignment does not require spending real money, I elected to complete the required substitute task instead.
+I created a full deployment walkthrough demonstrating exactly how the project would be deployed using Azure App Service, Azure SQL Database, connection strings,
+runtime selection, and Visual Studio’s Publish workflow. This includes App Service creation, Resource Group setup, SQL provisioning, environment variable configuration,
+and final publishing steps.
+
+You can view the full step-by-step deployment guide here:
+
+DEPLOYMENT.md
+C:\Users\Max\Desktop\SPC Technology\C# ASP.NET\HappyPawsKennel\DEPLOYMENT.md
+
+
+Even though this deployment was simulated, writing out the workflow helped me clearly understand how Azure hosting works, what configuration files are needed, and how to
+prepare an ASP.NET Core MVC application for a real production environment. This process gave me a stronger foundation for future projects that need to be deployed to
+the cloud.
+
